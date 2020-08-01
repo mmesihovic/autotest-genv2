@@ -1,0 +1,293 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+    <title>Autotest Generator</title>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="../bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" href="../css/common.css">
+    <link rel="stylesheet" href="../css/awesome-bootstrap-checkbox.css">
+    <script src="../scripts/helpers.js"></script>
+    <script src="../scripts/atgenerator.service.js"></script>
+    <script src="../scripts/autotest.js"></script>
+    <script src="../scripts/config.js"></script>
+</head>
+
+<body>
+    <div id="content">
+        <div id="atConfig">
+            <form>
+                <div class="row">
+                    <label for="name" class="col-sm-2 col-form-label-sm">Task name</label>
+                    <div class="col-sm-5">
+                        <input type="text" id="name" class="form-control form-control-sm" placeholder="Task name"/>
+                    </div>                    
+                    <div class="form-group form-inline col-sm-3" style="padding: 0;">     
+                        <label for="id" class="col-form-label-sm" style="margin-right: 15px;">ID</label>                   
+                        <input type="text" id="id" class="col-sm-3 form-control form-control-sm" placeholder="ID" disabled />
+                    </div>
+                    <div class="col-sm-2">
+                        <button type="button" class="btn btn-success btn-sm float-right" onclick="AutotestGenerator.exportConfigValues()">Save & Export</button>
+                    </div>
+                </div>           
+            </form>
+        </div>
+        <ul class="nav nav-tabs">
+            <li class="nav-item">
+                <a class="nav-link active" id="tsButton" data-toggle="tab" onclick="AutotestGenerator.openTab('atDetails', 'general')">Test Specifications</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" id="hafButton" data-toggle="tab" onclick="AutotestGenerator.openTab('headerAdvancedFeatures', 'general')">Advanced Features</a>
+            </li>
+        </ul>
+        <div class="tab-content">
+            <!-- Tab with all test specifications -->
+            <div id="atDetails" class="row tab-pane active" style="display: flex">
+                <div class="col-md-2" id="atList">
+                    <!--List header-->
+                    <div class="row justify-content-between" style="font-size: 16px; border-bottom: 1px solid #ccc; margin-bottom: 10px;">
+                        <label style="vertical-align:text-bottom">Tests</label>
+                        <i class="material-icons float-right" onclick="AutotestGenerator.addTest(null, 'X (Unedited)')">add_circle_outline</i>
+                    </div>
+                    <div class="row" id="at_warning">
+                        <label>There are no tests defined<br/>for this task.</label>
+                    </div>
+                    <!--Autotest list content-->
+                </div>
+                <div class="col-md-10 col-md-offset-2" id="atPreview">
+                    <form>
+                        <div class="row">
+                            <label for="at_id" class="col-sm-2 col-form-label-sm">ID</label>
+                            <div class="col-sm-1">
+                                <input type="text" id="at_id" class="form-control form-control-sm" placeholder="Test ID" disabled />
+                            </div>
+                            <label for="at_name" class="col-sm-1 col-form-label-sm">Name</label>
+                            <div class="col-sm-2">
+                                <input type="text" id="at_name" class="form-control form-control-sm" placeholder="Test name" disabled />
+                            </div>
+                            <div class="col-sm-4"></div>
+                        </div>
+                        <div class="row">
+                            <label for="stdin" class="col-sm-2 col-form-label-sm">Input</label>
+                            <div class="col-sm-10">
+                                <textarea id="stdin" class="form-control form-control-sm" rows="4" placeholder="Input"></textarea>
+                            </div>
+                        </div> 
+                        <div id="expected_output_variants" class="row">
+                            <div class="col-sm-2">
+                                <label>Expected Output</label>
+                                <i class="material-icons float-right" onclick="AutotestGenerator.addOutputVariant()">add_circle_outline</i>
+                            </div>
+                            <div class="col-sm-10"> </div>
+                            <div id="label_div_v_1" class="col-sm-2"> 
+                                <label for="variant_1" class="col-form-label-sm">Variant 1</label>
+                            </div>
+                            <div id="text_div_v_1" class="col-sm-10">
+                                <textarea id="variant_1" class="form-control form-control-sm" rows="4" placeholder="Expected Output (Variant 1)"></textarea>
+                            </div>
+                        </div>
+                        
+                        <ul class="nav nav-tabs">
+                            <li class="nav-item">
+                                <a class="nav-link active" id="pButton" data-toggle="tab" onclick="AutotestGenerator.openTab('patches', 'test_specific')">Patches</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" id="ptButton" data-toggle="tab" onclick="AutotestGenerator.openTab('parseTools', 'test_specific')">Parse tools</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" id="tuButton" data-toggle="tab" onclick="AutotestGenerator.openTab('toolsUsed', 'test_specific')">Test specific tools</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" id="afButton" data-toggle="tab" onclick="AutotestGenerator.openTab('advancedFeatures', 'test_specific')">Advanced Features</a>
+                            </li>
+                        </ul>                    
+                        <div class="tab-content">
+                            <!-- Patches Tab Content-->
+                            <div class="tab-pane active" id="patches">
+                                <div id="patch-contents">
+
+                                </div>
+                                <div class="col-sm-12">
+                                    <i class="material-icons float-left" onclick="AutotestGenerator.addNewPatch()">add_circle_outline</i>
+                                    <label>Click on + to add a new patch</label>
+                                </div>
+                            </div>
+                            <!-- Parse Tools Tab Content-->
+                            <div class="tab-pane " id="parseTools">
+                                <!-- Require Symbols -->
+                                <div class="row">
+                                    <label for="require_symbols" class="col-sm-2 col-form-label-sm">Require symbols (string array)</label>
+                                    <div class="col-sm-10">
+                                        <input type="text" id="require_symbols" class="form-control form-control-sm" placeholder="If any of the symbols named in this list doesn't exist, the test fails." />
+                                    </div>
+                                </div>              
+                                <!-- Ban Symbols --> 
+                                <div class="row">
+                                    <label for="ban_symbols" class="col-sm-2 col-form-label-sm">Ban symbols (string array)</label>
+                                    <div class="col-sm-10">
+                                        <input type="text" id="ban_symbols" class="form-control form-control-sm" placeholder="If any of the symbols named in this list exists, the test fails." />
+                                    </div>
+                                </div>    
+                                <!-- Require Substrings -->
+                                <div class="row">
+                                    <label for="require_substrings" class="col-sm-2 col-form-label-sm">Require Substrings (string array)</label>
+                                    <div class="col-sm-10">
+                                        <input type="text" id="require_substrings" class="form-control form-control-sm" placeholder="If none of the source files contains one of the substrings given in this list, the test fails." />
+                                    </div>
+                                </div>  
+                                <!-- Ban Substrings -->
+                                <div class="row">
+                                    <label for="ban_substrings" class="col-sm-2 col-form-label-sm">Ban Substrings (string array)</label>
+                                    <div class="col-sm-10">
+                                        <input type="text" id="ban_substrings" class="form-control form-control-sm" placeholder="If any of the source files contains one of the substrings given in this list, the test fails." />
+                                    </div>
+                                </div>  
+                                <!-- Require Types -->
+                                <div class="row">
+                                    <label for="require_types" class="col-sm-2 col-form-label-sm">Require Types (string array)</label>
+                                    <div class="col-sm-10">
+                                        <input type="text" id="require_types" class="form-control form-control-sm" placeholder="Requires one of datatypes in the list to be present in source (including the words 'array of', also as a substring)." />
+                                    </div>
+                                </div>  
+                                <!-- Ban Types -->
+                                <div class="row">
+                                    <label for="ban_types" class="col-sm-2 col-form-label-sm">Ban Types (string array)</label>
+                                    <div class="col-sm-10">
+                                        <input type="text" id="ban_types" class="form-control form-control-sm" placeholder="Forbids one of datatypes in the list to be present in source (including the words 'array of', also as a substring)." />
+                                    </div>
+                                </div>  
+                                <!-- Rename Symbols -->
+                                <div class="row">
+                                    <label for="rename_symbols" class="col-sm-2 col-form-label-sm">Rename Symbols (object)</label>
+                                    <div class="col-sm-10">
+                                        <input type="text" id="rename_symbols" class="form-control form-control-sm" placeholder="Rename each symbol given by key (of JSON object) with the value given." />
+                                    </div>
+                                </div>  
+                                <!-- Replace Substrings -->
+                                <div class="row">
+                                    <label for="replace_substrings" class="col-sm-2 col-form-label-sm">Replace substrings (object)</label>
+                                    <div class="col-sm-10">
+                                        <input type="text" id="replace_substrings" class="form-control form-control-sm" placeholder="Make a string replace in all source files, replacing object keys in the array with their values." />
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Tools used by test tab content-->
+                            <div class="tab-pane fade" id="toolsUsed">
+                                <label class="col-sm-12" style="color:red; word-wrap: break-word; font-size:small">
+                                    <i>IMPORTANT NOTE:</i> You are free to remove or add tools, but keep in mind that tools will be applied in order they are specified.
+                                    <b>If <i>EXECUTE</i> tool is not in this list, it is automatically assumed that all tools specified in this list are to be applied before program execution.</b>
+                                </label>
+                                <div id="test_tools_specification_list">
+
+                                </div>
+                                <div class="form-row">
+                                    <div class="col-sm-5">
+                                        <i class="material-icons float-left" style="padding-right: 5px;" onclick="AutotestGenerator.addToolSpecification('test',null,null)">add_circle_outline</i>
+                                        <label>Click on + to add new tool specification</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="tab-pane fade" id="advancedFeatures">
+                                <div class="row">
+                                    <div class="col-sm-2">
+                                    	<label class="col-form-label-sm" for="matching_select" >Matching</label>
+                                    </div>
+                                    <div class="col-sm-4">
+                                    	<select class="form-control form-control-sm" id="matching_select">
+                                            <option value="" selected disabled hidden>Select matching</option>
+                                            <option value="full">Full</option>
+                                            <option value="invisible">Invisible</option>
+                                            <option value="whitespace">Whitespace</option>
+                                            <option value="substring">Substring</option>
+                                            <option value="regex">Regex</option>
+                                    	</select>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-2">
+                                    	<label class="col-form-label-sm" for="expect_exception" >Expect exception</label>
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <input type="text" id="expect_exception" class="form-control form-control-sm" placeholder="Exception class that is expected (Empty string matches any exception)">
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <label class="col-sm-2 col-form-label-sm">Additional options</label>
+                                    <div class="col-sm-10">
+                                        <div class="form-check form-check-inline">
+                                                <input class="form-check-input" type="checkbox" id="nodetail">
+                                                <label class="form-check-label" for="nodetail">Nodetail</label>
+                                        </div>
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input" type="checkbox" id="silent">
+                                            <label class="form-check-label" for="silent">Silent</label>
+                                        </div>
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input" type="checkbox" id="terminate">
+                                            <label class="form-check-label" for="terminate">Terminate</label>
+                                        </div>
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input" type="checkbox" id="reuse">
+                                            <label class="form-check-label" for="reuse">Reuse</label>
+                                            </div>                
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <label class="col-sm-2 col-form-label-sm"> </label>
+                                    <div class="col-sm-10">
+                                        <div class="form-check form-check-inline">
+                                                <input class="form-check-input" type="checkbox" id="expect_crash">
+                                                <label class="form-check-label" for="expectCrash">Expect Crash</label>
+                                        </div>
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input" type="checkbox" id="merge_stderr">
+                                            <label class="form-check-label" for="merge_sterr">Merge standard error output to standard output</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <!-- Header Advanced Features Tab -->
+            <div class="tab-pane fade" id="headerAdvancedFeatures">
+                <div class="row">
+                    <div class="col-sm-2">
+                        <div class="col-sm-12" style="font-size: 16px; border-bottom: 1px solid #ccc; padding-left: 0px">
+                            <label style="vertical-align:text-bottom" class="col-form-label-sm">Languages</label> 
+                        </div>
+                        <div class="col-sm-12" id="languages-list" style="padding-left: 0px; padding-top: 10px;">
+                        </div>              
+                    </div>
+                    <div class="col-sm-10 col-sm-offset-2">
+                        <div class="col-sm-12" style="font-size: 16px; border-bottom: 1px solid #ccc; padding-left: 0px">
+                            <label style="vertical-align:text-bottom" class="col-form-label-sm">Tools</label> 
+                        </div>
+                        <div id="tools_specification_list">
+
+                        </div>
+                        <div class="form-row">
+                            <div class="col-sm-5">
+                                <i class="material-icons float-left" style="padding-right: 5px;" onclick="AutotestGenerator.addToolSpecification('header',null,null)">add_circle_outline</i>
+                                <label>Click on + to add new tool specification</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>  
+    </div>
+    
+</body>
+
+</html>
+
+
+
+
+
+            
+
+            

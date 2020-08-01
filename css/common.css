@@ -1,0 +1,32 @@
+#content {
+    padding: 20px; 
+}
+
+#atDetails {
+    margin-left: 0px !important;
+}
+
+#atConfig {
+    margin-bottom: 10px;
+}
+
+#at_warning {
+    display: block;
+    text-align: center;
+}
+
+textarea {
+    margin-bottom: 8px;
+    resize:none;
+}
+
+#configAdvancedFeatures {
+    margin-top: 10px;
+    border: 1px solid #ccc!important;
+    border-radius: 10px;
+    border-style: inset;
+}
+
+.tab-pane {
+    padding-top:15px;
+}
