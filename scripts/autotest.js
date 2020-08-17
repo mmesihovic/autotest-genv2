@@ -100,9 +100,10 @@ const exportToolsFromAdvancedFeatures = () => {
 // Tested - Working
 //Patching general config parameters on from
 const patchConfigValues = (data) => {
-
-    document.getElementById('id').value = data.id; 
-    document.getElementById('name').value = data.name;
+    console.log(data);
+    console.log(document.getElementById('id'));
+    document.getElementById("id").value = data.id; 
+    document.getElementById("name").value = data.name;
     //Adding languages
     createLanguageList();
     for(language of data.languages) {
@@ -837,4 +838,4 @@ return {
 
 })();
 
-window.onload = AutotestGenerator.setGeneratorSetup();
+window.onload = AutotestGenerator.setGeneratorSetup;

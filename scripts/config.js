@@ -1,7 +1,7 @@
 const Config = (() => {
    
     //List of supported languages with true/false value if they're included by default
-    const getLanguages = () =>{
+    const getLanguages = () => {
         return {
             "C"          : false,
             "C++"        : false,
