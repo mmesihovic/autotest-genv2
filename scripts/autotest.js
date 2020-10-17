@@ -25,12 +25,16 @@ const mapValues = (data) =>{
 //Outdated
 const setGeneratorSetup = () => {
     let _config  = window.localStorage.getItem(".autotest-content");
-    _config = JSON.parse(config);
-    if(Object.keys(_config).length === 0 && _additionalTokens.constructor === Object) {
-        mapValues(atGeneratorService.getTemplate());
-    } else 
+    try {
+        _config = JSON.parse(config);
         mapValues(_config)
-    window.localStorage.removeItem(".autotest-content");    
+    } catch(e) {
+        console.log("Error: ", e);
+        mapValues(atGeneratorService.getTemplate());
+    }
+    finally { 
+        window.localStorage.removeItem(".autotest-content");    
+    }
 }
 // Tested - Working
 //Function which patches all values on to the forms, creates atList and loads first test if it exists
