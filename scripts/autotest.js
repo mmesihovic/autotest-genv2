@@ -61,7 +61,7 @@ const exportConfigValues = () => {
     }
     newConfig.tests = _testSpecifications;
     console.log("New Tests: ", _testSpecifications);
-    window.localStorage.setItem('.autotest-content', JSON.strinfigy(newConfig));
+    window.localStorage.setItem('.autotest-content', JSON.stringify(newConfig));
 }
 //RECHECK
 //Getting general config parameters from form - atConfig
