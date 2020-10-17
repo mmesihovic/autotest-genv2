@@ -4,9 +4,6 @@ const AutotestGenerator = (() => {
 //config is .autotest content
 var config;
 var currentTest;
-var get_url;
-var post_url;
-var atid_url;
 var _testSpecifications = [];
 
 const getNextTestID = () => {
@@ -27,11 +24,13 @@ const mapValues = (data) =>{
 }
 //Outdated
 const setGeneratorSetup = () => {
-    get_url = window.localStorage.getItem("Zamger_URL_Autotest");
-    post_url = get_url;
-    window.localStorage.removeItem("Zamger_URL_Autotest");
-    
-    atGeneratorService.getConfigFile(get_url, mapValues);     
+    let _config  = window.localStorage.getItem(".autotest-content");
+    _config = JSON.parse(config);
+    if(Object.keys(_config).length === 0 && _additionalTokens.constructor === Object) {
+        mapValues(atGeneratorService.getTemplate());
+    } else 
+        mapValues(_config)
+    window.localStorage.removeItem(".autotest-content");    
 }
 // Tested - Working
 //Function which patches all values on to the forms, creates atList and loads first test if it exists
@@ -58,7 +57,7 @@ const exportConfigValues = () => {
     }
     newConfig.tests = _testSpecifications;
     console.log("New Tests: ", _testSpecifications);
-    atGeneratorService.saveConfigFile(newConfig, post_url);
+    window.localStorage.setItem('.autotest-content', newConfig);
 }
 //RECHECK
 //Getting general config parameters from form - atConfig

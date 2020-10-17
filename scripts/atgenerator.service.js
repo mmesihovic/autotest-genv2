@@ -169,7 +169,7 @@ const atGeneratorService = (() => {
         "tools": {},
         "tests": []
     }
-
+    //Not needed on this version
     const getConfigFile = (url, callback) => {
         console.log("GET URL: ", url);
         callback(cfg);
@@ -191,6 +191,7 @@ const atGeneratorService = (() => {
         xhttp.send();*/
     }
 
+    //Not needed on this version
     const saveConfigFile = (file, url) => {
         console.log("POST URL: ", url);
         console.log("Saving .autotest file: ", file);
@@ -208,7 +209,7 @@ const atGeneratorService = (() => {
         //file = Helpers.clearEmptyObjects(file);
         download(file, "testna.json", "application/json");
     }
-    
+    //Not needed on this version
     const download = (content, fileName, contentType) => {
         var a = document.createElement('a');
         var file = new Blob([JSON.stringify(content)], {type: contentType});
@@ -218,7 +219,7 @@ const atGeneratorService = (() => {
     }
 
     const getTemplate = () => {
-        return cfg;
+        return emptyConfig;
     }
 
     return {
