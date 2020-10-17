@@ -26,7 +26,7 @@ const mapValues = (data) =>{
 const setGeneratorSetup = () => {
     let _config  = window.localStorage.getItem(".autotest-content");
     try {
-        _config = JSON.parse(config);
+        _config = JSON.parse(_config);
         mapValues(_config)
     } catch(e) {
         console.log("Error: ", e);
@@ -61,14 +61,14 @@ const exportConfigValues = () => {
     }
     newConfig.tests = _testSpecifications;
     console.log("New Tests: ", _testSpecifications);
-    window.localStorage.setItem('.autotest-content', newConfig);
+    window.localStorage.setItem('.autotest-content', JSON.strinfigy(newConfig));
 }
 //RECHECK
 //Getting general config parameters from form - atConfig
 const getConfigValues = () => {
     return {
         id: Number(document.getElementById('id').value) ? Number(document.getElementById('id').value) : 0,
-        name: document.getElementById('name').value ? document.getElementById('name') : "",
+        name: document.getElementById('name').value ? document.getElementById('name').value : "",
         languages: exportLanguages(),
         tools: exportToolsFromAdvancedFeatures(),
         tests: []
