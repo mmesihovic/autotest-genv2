@@ -411,7 +411,7 @@ const removeAdvancedFeatures = () => {
     document.getElementById('reuse').checked = false;
     document.getElementById('expect_crash').checked = false; 
     document.getElementById('expect_exception').value = "";
-    document.getElementById('merge_stderr').checked = true;
+    document.getElementById('merge_stderr').checked = false;
 }
 
 const patchTestSpecificTools = (test, newTest) => {
@@ -458,8 +458,7 @@ const patchAdvancedFeatures = (data) => {
     document.getElementById('expect_crash').checked = data.execute.expect_crash ? data.execute.expect_crash : false; 
     document.getElementById('expect_exception').value = data.execute.expect_exception ? data.execute.expect_exception : "",
     //Default value is true
-    document.getElementById('merge_stderr').checked = data.execute.merge_stderr ? data.execute.merge_stderr : true;
- 
+    document.getElementById('merge_stderr').checked = data.execute.merge_stderr ? data.execute.merge_stderr : false; 
 }
 
 const patchParseTools = (data) => {
