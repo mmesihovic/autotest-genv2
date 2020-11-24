@@ -151,7 +151,8 @@ const extractPatchObjects = () => {
         var code = document.getElementById('code_variant_' + variant_number).value;
         var selectedIndex = positionSelect.selectedIndex;
         var position;
-        if(selectedIndex > 0) positionSelect.options[positionSelect.selectedIndex].value;
+        if(selectedIndex > 0) 
+            position = positionSelect.options[positionSelect.selectedIndex].value;
         var use_markers = document.getElementById('use_markers_' + variant_number).checked;
         var try_catch = document.getElementById('try_catch_' + variant_number).checked;
         if(!!position) newPatch.position = position;
@@ -611,7 +612,7 @@ const removeOutputVariant = (objectID) => {
 //Dynamically adding alternative output 
 const addOutputVariant = () => {
     var outputContainer = document.getElementById('expected_output_variants');
-    var variant_number = Helpers.generateIndexSuffix();
+    var variant_number = (outputContainer.children.length/2);
     //Creating DOM Elements
     var labelRow = document.createElement("div");
     var textRow = document.createElement("div");
