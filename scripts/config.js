@@ -27,7 +27,7 @@ const Config = (() => {
     //Retarded but I'm lazy
     const getSelectedIndex = (position) => {
         var positions = ["main", "above_main", "above_main_class", "top_of_file"];
-        return positions.indexOf(position)+1;
+        return positions.indexOf(position);
     }
     
 
