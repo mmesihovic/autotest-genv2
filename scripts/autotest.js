@@ -4,9 +4,6 @@ const AutotestGenerator = (() => {
 //config is .autotest content
 var config;
 var currentTest;
-var get_url;
-var post_url;
-var atid_url;
 var _testSpecifications = [];
 
 const getNextTestID = () => {
@@ -27,11 +24,17 @@ const mapValues = (data) =>{
 }
 //Outdated
 const setGeneratorSetup = () => {
-    get_url = window.localStorage.getItem("Zamger_URL_Autotest");
-    post_url = get_url;
-    window.localStorage.removeItem("Zamger_URL_Autotest");
-    
-    atGeneratorService.getConfigFile(get_url, mapValues);     
+    let _config  = window.localStorage.getItem(".autotest-content");
+    try {
+        _config = JSON.parse(_config);
+        mapValues(_config)
+    } catch(e) {
+        console.log("Error: ", e);
+        mapValues(atGeneratorService.getTemplate());
+    }
+    finally { 
+        window.localStorage.removeItem(".autotest-content");    
+    }
 }
 // Tested - Working
 //Function which patches all values on to the forms, creates atList and loads first test if it exists
@@ -58,14 +61,14 @@ const exportConfigValues = () => {
     }
     newConfig.tests = _testSpecifications;
     console.log("New Tests: ", _testSpecifications);
-    atGeneratorService.saveConfigFile(newConfig, post_url);
+    window.localStorage.setItem('.autotest-content', JSON.stringify(newConfig));
 }
 //RECHECK
 //Getting general config parameters from form - atConfig
 const getConfigValues = () => {
     return {
         id: Number(document.getElementById('id').value) ? Number(document.getElementById('id').value) : 0,
-        name: document.getElementById('name').value ? document.getElementById('name') : "",
+        name: document.getElementById('name').value ? document.getElementById('name').value : "",
         languages: exportLanguages(),
         tools: exportToolsFromAdvancedFeatures(),
         tests: []
@@ -251,7 +254,7 @@ const getTestValues = () => {
         }
         test[key] = value;
     }
-    if(!test.execute) test.execute = executeObject;
+    if(!test.execute && Object.keys(executeObject).length != 0) test.execute = executeObject;
     console.log("Test: ", test);
     return test;
 }
@@ -408,7 +411,7 @@ const removeAdvancedFeatures = () => {
     document.getElementById('reuse').checked = false;
     document.getElementById('expect_crash').checked = false; 
     document.getElementById('expect_exception').value = "";
-    document.getElementById('merge_stderr').checked = true;
+    document.getElementById('merge_stderr').checked = false;
 }
 
 const patchTestSpecificTools = (test, newTest) => {
@@ -455,8 +458,7 @@ const patchAdvancedFeatures = (data) => {
     document.getElementById('expect_crash').checked = data.execute.expect_crash ? data.execute.expect_crash : false; 
     document.getElementById('expect_exception').value = data.execute.expect_exception ? data.execute.expect_exception : "",
     //Default value is true
-    document.getElementById('merge_stderr').checked = data.execute.merge_stderr ? data.execute.merge_stderr : true;
- 
+    document.getElementById('merge_stderr').checked = data.execute.merge_stderr ? data.execute.merge_stderr : false; 
 }
 
 const patchParseTools = (data) => {
