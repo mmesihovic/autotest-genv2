@@ -254,7 +254,7 @@ const getTestValues = () => {
         }
         test[key] = value;
     }
-    if(!test.execute) test.execute = executeObject;
+    if(!test.execute && Object.keys(executeObject).length != 0) test.execute = executeObject;
     console.log("Test: ", test);
     return test;
 }
