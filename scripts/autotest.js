@@ -137,6 +137,7 @@ const getAdditionalOptionValues = () => {
     document.getElementById('silent').checked ? options.push('silent') : {};
     document.getElementById('terminate').checked ? options.push('terminate') : {};
     document.getElementById('reuse').checked ? options.push('reuse') : {};
+    document.getElementById('hidden').checked ? options.push('hidden') : {};
     return options;
 }
 
@@ -409,6 +410,7 @@ const removeAdvancedFeatures = () => {
     document.getElementById('silent').checked = false;
     document.getElementById('terminate').checked = false;
     document.getElementById('reuse').checked = false;
+    document.getElementById('hidden').checked = false;
     document.getElementById('expect_crash').checked = false; 
     document.getElementById('expect_exception').value = "";
     document.getElementById('merge_stderr').checked = false;
@@ -452,6 +454,7 @@ const patchAdvancedFeatures = (data) => {
     document.getElementById('silent').checked = data.options.includes('silent');
     document.getElementById('terminate').checked = data.options.includes('terminate');
     document.getElementById('reuse').checked = data.options.includes('reuse');
+    document.getElementById('hidden').checked = data.options.includes('hidden');
     if(!(data && data.execute)) return;
     //matching
     //expected exception
